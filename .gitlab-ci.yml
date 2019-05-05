@@ -1,0 +1,36 @@
+stages:
+  - build
+  - test
+
+Composer Install:
+  image: composer:1.8.4
+  stage: build
+  script: composer install
+  artifacts:
+    paths:
+    - vendor
+    expire_in: 10 minutes
+
+Code Style Checks:
+  stage: test
+  image: php:7.3.4-apache
+  script: ./vendor/bin/phpcs src test templates --standard=PSR2
+
+Static Code Analysis:
+  stage: test
+  image: php:7.3.4-apache
+  before_script:
+    - echo "memory_limit = 512M" > /usr/local/etc/php/conf.d/memory.ini
+  script: ./vendor/bin/phpstan analyse --level=7 src
+
+Unit Tests:
+  stage: test
+  image: php:7.3.4-apache
+  before_script:
+    - pecl install xdebug
+    - echo "zend_extension=xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini
+  script: ./vendor/bin/phpunit test --coverage-html build/test-coverage --whitelist src --do-not-cache-result
+  artifacts:
+    paths:
+    - build/test-coverage
+    expire_in: 10 minutes
