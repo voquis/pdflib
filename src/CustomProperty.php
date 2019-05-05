@@ -2,7 +2,7 @@
 
 namespace Voquis;
 
-class InvoiceCustomProperty
+class CustomProperty
 {
     public $key = '';
 
@@ -11,7 +11,7 @@ class InvoiceCustomProperty
     /**
      * Populate
      */
-    public function populate(array $item)
+    public function populate(array $item): CustomProperty
     {
         $this->reset();
         // supplied fields
@@ -24,9 +24,10 @@ class InvoiceCustomProperty
     /**
      * Reset current object
      */
-    public function reset()
+    public function reset(): CustomProperty
     {
         $this->key = '';
         $this->value = '';
+        return $this;
     }
 }

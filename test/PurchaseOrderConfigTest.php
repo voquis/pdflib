@@ -4,11 +4,11 @@ namespace VoquisTest;
 
 use PHPUnit\Framework\TestCase;
 
-use Voquis\InvoiceConfig;
-use Voquis\InvoiceItem;
+use Voquis\PurchaseOrderConfig;
+use Voquis\PurchaseOrderItem;
 use Voquis\CustomProperty;
 
-final class InvoiceConfigTest extends TestCase
+final class PurchaseOrderConfigTest extends TestCase
 {
     private $config;
 
@@ -17,10 +17,10 @@ final class InvoiceConfigTest extends TestCase
      */
     public function setUp(): void
     {
-        $invoiceItem = new InvoiceItem;
+        $purchaseOrderItem = new PurchaseOrderItem;
         $customProperty = new CustomProperty;
-        $this->config = new InvoiceConfig(
-            $invoiceItem,
+        $this->config = new PurchaseOrderConfig(
+            $purchaseOrderItem,
             $customProperty
         );
     }
