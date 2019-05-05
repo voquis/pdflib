@@ -35,7 +35,7 @@
             <td width="40%"><table class="tbl">
                     <tbody>
                         <tr>
-                            <td class="bg-grey">Customer</td>
+                            <td class="bg-grey">Supplier</td>
                         </tr>
                         <tr>
                             <?php
@@ -48,7 +48,7 @@
                                     $this->config->addressPostcode
                                 ]))
                                 ?>
-                            <td><?php echo($this->config->customerName) ?><br><?php echo ($customerAddress); ?></td>
+                            <td><?php echo($this->config->supplierName) ?><br><?php echo ($supplierAddress); ?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -59,15 +59,15 @@
                 <table class="tbl">
                     <tbody>
                         <tr>
-                            <td width="40%" class="bg-grey">Tax Point</td>
-                            <td width="60%" align="right"><?php echo($this->config->taxPoint) ?></td>
+                            <td width="40%" class="bg-grey">Date</td>
+                            <td width="60%" align="right"><?php echo($this->config->purchaseOrderDate) ?></td>
                         </tr>
                     </tbody>
                 </table>
                 <table class="tbl">
                     <tbody>
                         <tr>
-                            <td width="40%" class="bg-grey">Invoice Ref</td>
+                            <td width="40%" class="bg-grey">Purchase Order Ref</td>
                             <td width="60%" align="right"><?php echo($this->config->ref) ?></td>
                         </tr>
                     </tbody>
@@ -94,7 +94,7 @@
 <table class="tbl">
     <tbody>
         <tr>
-            <th align="center" class="bg-grey"><h2>Invoice <?php echo($this->config->ref); ?></h2></th>
+            <th align="center" class="bg-grey"><h2>Purchase Order <?php echo($this->config->ref); ?></h2></th>
         </tr>
         <?php if ($this->config->summary) : ?>
         <tr>
@@ -145,7 +145,7 @@
 <table class="tbl">
     <tbody>
         <tr>
-            <th class="bg-grey"><strong>Payment Instructions</strong></th>
+            <th class="bg-grey"><strong>Supplier Instructions</strong></th>
         </tr>
         <tr>
             <td><?php echo($this->config->instructions); ?></td>

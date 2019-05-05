@@ -17,5 +17,15 @@
         "psr-4": {
             "Voquis\\": "src/"
         }
+    },
+    "scripts": {
+        "test": [
+            "@phpcs",
+            "@phpunit",
+            "@phpstan"
+        ],
+        "phpcs": "./vendor/bin/phpcs src test templates --standard=PSR2",
+        "phpunit": "./vendor/bin/phpunit test --coverage-html build/test-coverage --whitelist src --do-not-cache-result",
+        "phpstan":"./vendor/bin/phpstan analyse --level=7 src"
     }
 }

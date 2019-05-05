@@ -2,23 +2,21 @@
 
 namespace Voquis;
 
-class InvoiceConfig
+class PurchaseOrderConfig
 {
     /**
-     * @var InvoiceItem $invoiceItem
+     * @var PurchaseOrderItem $purchaseOrderItem
      */
-    private $invoiceItem;
+    private $purchaseOrderItem;
 
     /**
      * @var CustomProperty $customProperty
      */
     private $customProperty;
 
-    private $invoiceRef;
-
     public $ref = '';
 
-    public $customerName = '';
+    public $supplierName = '';
 
     public $addressLine1 = '';
 
@@ -32,7 +30,7 @@ class InvoiceConfig
 
     public $addressPostcode = '';
 
-    public $taxPoint = '';
+    public $date = '';
 
     public $items = [];
 
@@ -53,9 +51,9 @@ class InvoiceConfig
     /**
      * Construct
      */
-    public function __construct(InvoiceItem $invoiceItem, CustomProperty $customProperty)
+    public function __construct(PurchaseOrderItem $purchaseOrderItem, CustomProperty $customProperty)
     {
-        $this->invoiceItem = $invoiceItem;
+        $this->purchaseOrderItem = $purchaseOrderItem;
         $this->customProperty = $customProperty;
     }
 
@@ -71,17 +69,17 @@ class InvoiceConfig
         $this->addressCity = array_key_exists('addressCity', $config) ? $config['addressCity'] : '';
         $this->addressCounty = array_key_exists('addressCounty', $config) ? $config['addressCounty'] : '';
         $this->addressPostcode = array_key_exists('addressPostcode', $config) ? $config['addressPostcode'] : '';
-        // Invoice fields
+        // Purchase Order fields
         $this->ref = array_key_exists('ref', $config) ? $config['ref']: '';
-        $this->customerName = array_key_exists('customerName', $config) ? $config['customerName'] : '';
-        $this->taxPoint = array_key_exists('taxPoint', $config) ? $config['taxPoint']: '';
+        $this->supplierName = array_key_exists('supplierName', $config) ? $config['supplierName'] : '';
+        $this->date = array_key_exists('date', $config) ? $config['date']: '';
         $this->summary = array_key_exists('summary', $config) ? $config['summary'] : '';
         $this->instructions = array_key_exists('instructions', $config) ? $config['instructions'] : '';
         $this->notes = array_key_exists('notes', $config) ? $config['notes'] : '';
-        // Invoice items
+        // Purchase Order items
         if (array_key_exists('items', $config) && is_array($config['items'])) {
             foreach ($config['items'] as $item) {
-                $populatedItem = $this->invoiceItem->populate($item);
+                $populatedItem = $this->purchaseOrderItem->populate($item);
                 // Calculate totals
                 $this->net += $populatedItem->net;
                 $this->vat += $populatedItem->vat;
