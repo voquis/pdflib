@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/voquis/pdflib.svg?branch=master)](https://travis-ci.org/voquis/pdflib)
+
 # PDF Lib
 This PHP library is intended to be used within business applications to simplify generating PDF documents.  The library is optimised for regular A4 pages and supports the following document types:
 - Invoices
