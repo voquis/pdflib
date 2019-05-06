@@ -24,11 +24,9 @@
         list-style-type: none;
     }
 </style>
-<br />
-<br />
-<br />
-<br />
-<br />
+<?php
+    echo str_repeat('<br />', 1 + count($this->company->address->getArray()));
+?>
 <table>
     <tbody>
         <tr>
@@ -39,16 +37,10 @@
                         </tr>
                         <tr>
                             <?php
-                                $customerAddress = implode('<br />', array_filter([
-                                    $this->config->addressLine1,
-                                    $this->config->addressLine2,
-                                    $this->config->addressLine3,
-                                    $this->config->addressCity,
-                                    $this->config->addressCounty,
-                                    $this->config->addressPostcode
-                                ]))
-                                ?>
-                            <td><?php echo($this->config->customerName) ?><br><?php echo ($customerAddress); ?></td>
+                                $customerAddressArray = $this->invoice->company->address->getArray();
+                                $customerAddressString = implode('<br />', array_filter($customerAddressArray));
+                            ?>
+                            <td><?php echo($this->invoice->company->name . '<br />' . $customerAddressString); ?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -59,25 +51,17 @@
                 <table class="tbl">
                     <tbody>
                         <tr>
-                            <td width="40%" class="bg-grey">Tax Point</td>
-                            <td width="60%" align="right"><?php echo($this->config->taxPoint) ?></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="tbl">
-                    <tbody>
-                        <tr>
                             <td width="40%" class="bg-grey">Invoice Ref</td>
-                            <td width="60%" align="right"><?php echo($this->config->ref) ?></td>
+                            <td width="60%" align="right"><?php echo($this->invoice->ref) ?></td>
                         </tr>
                     </tbody>
                 </table>
-                <?php foreach ($this->config->customProperties as $customProperty) : ?>
+                <?php foreach ($this->invoice->keyValuePairs->items as $item) : ?>
                 <table class="tbl">
                     <tbody>
                         <tr>
-                            <td width="40%" class="bg-grey"><?php echo($customProperty->key); ?></td>
-                            <td width="60%" align="right"><?php echo($customProperty->value); ?></td>
+                            <td width="40%" class="bg-grey"><?php echo($item->key); ?></td>
+                            <td width="60%" align="right"><?php echo($item->value); ?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -94,11 +78,11 @@
 <table class="tbl">
     <tbody>
         <tr>
-            <th align="center" class="bg-grey"><h2>Invoice <?php echo($this->config->ref); ?></h2></th>
+            <th align="center" class="bg-grey"><h2>Invoice <?php echo($this->invoice->ref); ?></h2></th>
         </tr>
-        <?php if ($this->config->summary) : ?>
+        <?php if ($this->invoice->summary) : ?>
         <tr>
-            <td><?php echo($this->config->summary); ?></td>
+            <td><?php echo($this->invoice->summary); ?></td>
         </tr>
         <?php endif ?>
     </tbody>
@@ -117,7 +101,7 @@
             <th class="bg-grey" width="10%"><strong>Unit</strong></th>
             <th class="bg-grey" width="15%" align="right"><strong>Total</strong></th>
         </tr>
-        <?php foreach ($this->config->items as $item) : ?>
+        <?php foreach ($this->invoice->invoiceItems->items as $item) : ?>
         <tr>
             <td class="cell item"><?php echo $item->description; ?></td>
             <td class="cell item"><?php echo $item->quantity ?></td>
@@ -127,40 +111,47 @@
         <?php endforeach ?>
         <tr>
             <td colspan="3" class="cell foot" align="right" ><strong>Net</strong></td>
-            <td class="foot" align="right"><strong>&pound; <?php
-                echo(number_format($this->config->net, 2)) ?></strong></td>
+            <td class="foot" align="right"><strong><?php
+                echo(
+                    $this->invoice->symbol . ' '
+                    . number_format($this->invoice->net, 2)
+                ); ?></strong></td>
         </tr>
         <tr>
             <td colspan="3" class="cell" align="right"><strong>VAT</strong></td>
-            <td align="right"><strong>&pound; <?php echo(number_format($this->config->vat, 2)) ?></strong></td>
+            <td align="right"><strong><?php
+                echo ($this->invoice->symbol . ' ' . number_format($this->invoice->tax, 2));
+            ?></strong></td>
         </tr>
         <tr>
             <td colspan="3" class="cell" align="right"><strong>Total</strong></td>
-            <td align="right"><strong>&pound; <?php echo(number_format($this->config->gross, 2)) ?></strong></td>
+            <td align="right"><strong><?php
+                echo($this->invoice->symbol . ' '
+                . number_format($this->invoice->gross, 2)) ?></strong></td>
         </tr>
     </tbody>
 </table>
 
-<?php if ($this->config->instructions) : ?>
+<?php if ($this->invoice->instructions) : ?>
 <table class="tbl">
     <tbody>
         <tr>
             <th class="bg-grey"><strong>Payment Instructions</strong></th>
         </tr>
         <tr>
-            <td><?php echo($this->config->instructions); ?></td>
+            <td><?php echo($this->invoice->instructions); ?></td>
         </tr>
     </tbody>
 </table>
 <?php endif; ?>
-<?php if ($this->config->notes) : ?>
+<?php if ($this->invoice->notes) : ?>
 <table class="tbl">
     <tbody>
         <tr>
             <th class="bg-grey"><strong>Additional Notes</strong></th>
         </tr>
         <tr>
-            <td><?php echo($this->config->notes); ?></td>
+            <td><?php echo($this->invoice->notes); ?></td>
         </tr>
     </tbody>
 </table>
