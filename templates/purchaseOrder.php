@@ -24,11 +24,9 @@
         list-style-type: none;
     }
 </style>
-<br />
-<br />
-<br />
-<br />
-<br />
+<?php
+    echo str_repeat('<br />', 1 + count($this->company->address->getArray()));
+?>
 <table>
     <tbody>
         <tr>
@@ -39,16 +37,10 @@
                         </tr>
                         <tr>
                             <?php
-                                $customerAddress = implode('<br />', array_filter([
-                                    $this->config->addressLine1,
-                                    $this->config->addressLine2,
-                                    $this->config->addressLine3,
-                                    $this->config->addressCity,
-                                    $this->config->addressCounty,
-                                    $this->config->addressPostcode
-                                ]))
-                                ?>
-                            <td><?php echo($this->config->supplierName) ?><br><?php echo ($supplierAddress); ?></td>
+                                $addressArray = $this->purchaseOrder->company->address->getArray();
+                                $addressString = implode('<br />', array_filter($addressArray));
+                            ?>
+                            <td><?php echo($this->purchaseOrder->company->name . '<br />' . $addressString); ?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -59,25 +51,17 @@
                 <table class="tbl">
                     <tbody>
                         <tr>
-                            <td width="40%" class="bg-grey">Date</td>
-                            <td width="60%" align="right"><?php echo($this->config->purchaseOrderDate) ?></td>
+                            <td width="40%" class="bg-grey">Purchase Order</td>
+                            <td width="60%" align="right"><?php echo($this->purchaseOrder->ref) ?></td>
                         </tr>
                     </tbody>
                 </table>
+                <?php foreach ($this->purchaseOrder->keyValuePairs->items as $item) : ?>
                 <table class="tbl">
                     <tbody>
                         <tr>
-                            <td width="40%" class="bg-grey">Purchase Order Ref</td>
-                            <td width="60%" align="right"><?php echo($this->config->ref) ?></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <?php foreach ($this->config->customProperties as $customProperty) : ?>
-                <table class="tbl">
-                    <tbody>
-                        <tr>
-                            <td width="40%" class="bg-grey"><?php echo($customProperty->key); ?></td>
-                            <td width="60%" align="right"><?php echo($customProperty->value); ?></td>
+                            <td width="40%" class="bg-grey"><?php echo($item->key); ?></td>
+                            <td width="60%" align="right"><?php echo($item->value); ?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -94,11 +78,11 @@
 <table class="tbl">
     <tbody>
         <tr>
-            <th align="center" class="bg-grey"><h2>Purchase Order <?php echo($this->config->ref); ?></h2></th>
+            <th align="center" class="bg-grey"><h2>Purchase Order <?php echo($this->purchaseOrder->ref); ?></h2></th>
         </tr>
-        <?php if ($this->config->summary) : ?>
+        <?php if ($this->purchaseOrder->summary) : ?>
         <tr>
-            <td><?php echo($this->config->summary); ?></td>
+            <td><?php echo($this->purchaseOrder->summary); ?></td>
         </tr>
         <?php endif ?>
     </tbody>
@@ -117,7 +101,7 @@
             <th class="bg-grey" width="10%"><strong>Unit</strong></th>
             <th class="bg-grey" width="15%" align="right"><strong>Total</strong></th>
         </tr>
-        <?php foreach ($this->config->items as $item) : ?>
+        <?php foreach ($this->purchaseOrder->purchaseOrderItems->items as $item) : ?>
         <tr>
             <td class="cell item"><?php echo $item->description; ?></td>
             <td class="cell item"><?php echo $item->quantity ?></td>
@@ -127,40 +111,35 @@
         <?php endforeach ?>
         <tr>
             <td colspan="3" class="cell foot" align="right" ><strong>Net</strong></td>
-            <td class="foot" align="right"><strong>&pound; <?php
-                echo(number_format($this->config->net, 2)) ?></strong></td>
+            <td class="foot" align="right"><strong><?php
+                echo(
+                    $this->purchaseOrder->symbol . ' '
+                    . number_format($this->purchaseOrder->net, 2)
+                ); ?></strong></td>
         </tr>
         <tr>
             <td colspan="3" class="cell" align="right"><strong>VAT</strong></td>
-            <td align="right"><strong>&pound; <?php echo(number_format($this->config->vat, 2)) ?></strong></td>
+            <td align="right"><strong><?php
+                echo ($this->purchaseOrder->symbol . ' ' . number_format($this->purchaseOrder->tax, 2));
+            ?></strong></td>
         </tr>
         <tr>
             <td colspan="3" class="cell" align="right"><strong>Total</strong></td>
-            <td align="right"><strong>&pound; <?php echo(number_format($this->config->gross, 2)) ?></strong></td>
+            <td align="right"><strong><?php
+                echo($this->purchaseOrder->symbol . ' '
+                . number_format($this->purchaseOrder->gross, 2)) ?></strong></td>
         </tr>
     </tbody>
 </table>
 
-<?php if ($this->config->instructions) : ?>
+<?php if ($this->purchaseOrder->notes) : ?>
 <table class="tbl">
     <tbody>
         <tr>
-            <th class="bg-grey"><strong>Supplier Instructions</strong></th>
+            <th class="bg-grey"><strong>Supplier Notes</strong></th>
         </tr>
         <tr>
-            <td><?php echo($this->config->instructions); ?></td>
-        </tr>
-    </tbody>
-</table>
-<?php endif; ?>
-<?php if ($this->config->notes) : ?>
-<table class="tbl">
-    <tbody>
-        <tr>
-            <th class="bg-grey"><strong>Additional Notes</strong></th>
-        </tr>
-        <tr>
-            <td><?php echo($this->config->notes); ?></td>
+            <td><?php echo($this->purchaseOrder->notes); ?></td>
         </tr>
     </tbody>
 </table>
