@@ -48,7 +48,7 @@ abstract class Document extends TCPDF
     //Page header
     public function header()
     {
-        $addressString = implode('<br />', $this->company->address->getArray());
+        $addressString = implode('<br />', array_filter($this->company->address->getArray()));
         // Logo
         $lhs = '<img height="' . $this->logoHeight . 'px" src="' . $this->company->logoUrl . '">';
         $rhs = $this->company->name . '<br>' . $addressString;

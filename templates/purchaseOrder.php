@@ -25,7 +25,7 @@
     }
 </style>
 <?php
-    echo str_repeat('<br />', 1 + count($this->company->address->getArray()));
+    echo str_repeat('<br />', 1 + count(array_filter($this->company->address->getArray())));
 ?>
 <table>
     <tbody>
