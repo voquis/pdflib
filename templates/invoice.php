@@ -72,9 +72,6 @@
 </table>
 <br>
 <br>
-<br>
-<br>
-<br>
 <table class="tbl">
     <tbody>
         <tr>
@@ -89,10 +86,6 @@
 </table>
 <br>
 <br>
-<br>
-<br>
-<br>
-
 <table class="tbl">
     <tbody>
         <tr>
